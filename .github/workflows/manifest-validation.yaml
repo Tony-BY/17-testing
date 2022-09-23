@@ -19,6 +19,7 @@ jobs:
          matrix:
              manifest: ${{ fromJson(needs.list-manifests.outputs.matrix) }}
      steps:
+       - uses: actions/checkout@v2.4.2     
        - name: Validate manifests by kubeval 
          uses: instrumenta/kubeval-action@master
          with:
