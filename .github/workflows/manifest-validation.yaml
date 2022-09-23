@@ -22,4 +22,4 @@ jobs:
        - name: Validate manifests by kubeval 
          uses: instrumenta/kubeval-action@master
          with:
-           files: ${{ martix.manifest }}
+           files: ${{ matrix.manifest }}
