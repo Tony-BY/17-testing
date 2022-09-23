@@ -18,7 +18,7 @@ data:
     receivers:
     - name: slack_demo
       slack_configs:
-      - api_url: https://hooks.slack.com/services/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
+      - api_url: https://hooks.slack.com/services/T0
         channel: '#notifications'
         text: "<!channel> \nsummary: {{ .CommonAnnotations.summary }}\ndescription: {{ .CommonAnnotations.description }}"
 ---
