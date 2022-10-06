@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: wordpress
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: wordpress
+  template:
+    metadata:
+      labels:
+        app: wordpress
+    spec:
+      containers:
+      - name: wordpress
+        image: wordpress:6.0.2
+        imagePullPolicy: Always
+        env:
+          - name: WORDPRESS_DB_HOST
+            value: 192.168.202.26
+          - name: WORDPRESS_DB_USER
+            value: wordpress
+          - name: WORDPRESS_DB_PASSWORD
+            value: wordpress
+          - name: WORDPRESS_DB_NAME
+            value: wordpress_test
+          - name: WORDPRESS_USERNAME
+            value: admin
+          - name: WORDPRESS_PASSWORD
+            value: admin
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1000Mi
+          requests:
+            cpu: 500m
+            memory: 500Mi
+        volumeMounts:
+        - name: persistent-storage
+          mountPath: "/var/www/html/wp-content"
+      volumes:
+      - name: persistent-storage
+        persistentVolumeClaim:
+          claimName: wordpress-pv-claim    
+  strategy:
+    blueGreen: 
+      activeService: wordpress-active
+      previewService: wordpress-preview
+      autoPromotionEnabled: false
